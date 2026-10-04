@@ -1,0 +1,4 @@
+# Profile: Deep (High-complexity Architecture & Hard Bug Reasoning)
+model = "gpt-6-astra"
+model_reasoning_effort = "high"
+service_tier = "priority"

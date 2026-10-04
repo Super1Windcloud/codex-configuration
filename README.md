@@ -31,12 +31,14 @@
 ### 5. 零侵入多模型分层架构（Profiles）
 告别每次手动改动 `config.toml` 注释切换模型：
 - 默认主干：`gpt-6-astra` (Reasoning: Medium)
+- 高难架构与疑难调试（强推理）：`codex -p deep` (Reasoning: High, Priority Tier)
+- 专业代码自查与门禁：`codex -p review` (gpt-5.5)
+- 快速切换轻量模型：`codex -p fast`
 - 快速切换 Grok：`codex -p grok`
 - 快速切换 Gemini：`codex -p gemini`
-- 快速切换轻量模型：`codex -p fast`
 
 ### 6. 高频规则池收敛（`rules/default.rules`）
-- 清理历史会话遗留的长篇一次性硬编码规则，收敛为通用的构建工具（`gradlew`、`cargo`、`brew`、`bun`、`node`、`adb`）与版本控制（`git`）前缀匹配。
+- 清理历史会话遗留的长篇一次性硬编码规则，收敛为通用的构建工具（`gradlew`、`cargo`、`brew`、`bun`、`node`、`adb`）、容器（`docker`、`podman`）与版本控制（`git`）前缀匹配。
 
 ---
 
@@ -62,9 +64,12 @@ cd codex-configuration
 ├── LICENSE                     # MIT 开源许可证
 ├── README.md                   # 详细使用与架构说明
 ├── install.sh                  # 一键部署与无缝升级脚本
+├── .env.example                # 环境变量配置模板
 ├── config.toml                 # 核心主配置（已脱敏 API Token）
-├── AGENTS.md                   # 全局 Agent 行为规范与交付契约
+├── AGENTS.md                   # 全局 Agent 行为规范与全栈工程交付契约
 ├── profiles/                   # 模型分层 Profiles
+│   ├── deep.config.toml        # 高推理重构与架构配置 (Reasoning: High)
+│   ├── review.config.toml      # 代码质量门禁审计配置 (gpt-5.5)
 │   ├── fast.config.toml        # 轻量极速模型配置 (gpt-5.5)
 │   ├── gemini.config.toml      # Gemini 3.8 Flash 配置
 │   └── grok.config.toml        # Grok 4.7 配置
@@ -87,6 +92,8 @@ fi
 # 常用高频别名
 alias cx="codex"
 alias cxr="codex resume --last"     # 一秒接续上次工作上下文
+alias cxd="codex -p deep"           # 启动高推理深度模型（架构重构/死锁并发排查）
+alias cxv="codex -p review"         # 启动代码审计评审
 alias cxg="codex -p grok"           # 启动 Grok 模型
 alias cxm="codex -p gemini"         # 启动 Gemini 模型
 alias cxf="codex -p fast"           # 启动轻量快速模型

@@ -1,0 +1,4 @@
+# Profile: Review (Dedicated Code Review & Architecture Auditing)
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+service_tier = "fast"

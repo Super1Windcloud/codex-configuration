@@ -24,3 +24,16 @@ prefix_rule(pattern=["grep"], decision="allow")
 prefix_rule(pattern=["rg"], decision="allow")
 prefix_rule(pattern=["curl"], decision="allow")
 prefix_rule(pattern=["sqlite3"], decision="allow")
+prefix_rule(pattern=["tree"], decision="allow")
+prefix_rule(pattern=["diff"], decision="allow")
+prefix_rule(pattern=["ps"], decision="allow")
+prefix_rule(pattern=["lsof"], decision="allow")
+
+# Containers & virtualization
+prefix_rule(pattern=["docker"], decision="allow")
+prefix_rule(pattern=["podman"], decision="allow")
+
+# Archives & compression
+prefix_rule(pattern=["tar"], decision="allow")
+prefix_rule(pattern=["unzip"], decision="allow")
+prefix_rule(pattern=["zip"], decision="allow")
