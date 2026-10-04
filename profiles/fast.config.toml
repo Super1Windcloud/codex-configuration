@@ -1,0 +1,4 @@
+# Profile: Fast (Lightweight)
+model = "gpt-5.5"
+model_reasoning_effort = "low"
+service_tier = "fast"

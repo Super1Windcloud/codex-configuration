@@ -1,0 +1,18 @@
+# Package managers & build tools
+prefix_rule(pattern=["brew"], decision="allow")
+prefix_rule(pattern=["./gradlew"], decision="allow")
+prefix_rule(pattern=["gradle"], decision="allow")
+prefix_rule(pattern=["cargo"], decision="allow")
+prefix_rule(pattern=["just"], decision="allow")
+prefix_rule(pattern=["npm"], decision="allow")
+prefix_rule(pattern=["pnpm"], decision="allow")
+prefix_rule(pattern=["yarn"], decision="allow")
+
+# Version control
+prefix_rule(pattern=["git"], decision="allow")
+
+# Common inspection & tools
+prefix_rule(pattern=["find"], decision="allow")
+prefix_rule(pattern=["grep"], decision="allow")
+prefix_rule(pattern=["rg"], decision="allow")
+prefix_rule(pattern=["curl"], decision="allow")

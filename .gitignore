@@ -1,0 +1,30 @@
+# Auth & credentials
+auth.json
+*.token
+*.key
+
+# SQLite databases & logs
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.jsonl
+*.log
+
+# Caches & runtimes
+.cache/
+.tmp/
+tmp/
+sessions/
+archived_sessions/
+rollout-migrations/
+memories/
+visualizations/
+
+# Binary / runtime dependencies
+computer-use/
+*.app
+
+# OS files
+.DS_Store
+Thumbs.db

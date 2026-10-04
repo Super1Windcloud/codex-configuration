@@ -1,0 +1,254 @@
+model_provider = "aigo" #OpenAI，aigo
+# SandboxAPI=sk-YOUR_API_KEY_HERE
+# #混合组=sk-YOUR_API_KEY_HERE
+# 稳定组=sk-YOUR_API_KEY_HERE
+# 保底组=sk-YOUR_API_KEY_HERE
+# grok组=sk-YOUR_API_KEY_HERE
+# gemini组=sk-YOUR_API_KEY_HERE
+# [DEPRECATED in 0.160.0] windows_wsl_setup_acknowledged = true
+# [DEPRECATED in 0.160.0] network_access = "enabled"
+review_model = "gpt-5.5"
+notify = [ "/Users/super/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended" ]
+model_reasoning_effort = "medium"
+model = "gpt-6-astra"
+# model="gpt-6-astra"
+# grok_model="grok-4.7"
+# gemini-model="gemini-3.8-flash"
+service_tier = "fast"
+approvals_reviewer = "user"
+# [DEPRECATED in 0.160.0] disable_response_storage = false
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+
+
+# [DEPRECATED in 0.160.0 - 现代版本采用内置统一缓存池]
+# cache_size_mb = 512
+# cache_ttl = "30m"
+# smart_cache = true
+# cache_compression = true
+
+
+[model_providers.leleapi]
+requires_openai_auth = true
+name = "leleapi"
+base_url = "https://leleapi.top/v1"
+wire_api = "responses"
+# leleapi_plus=sk-YOUR_API_KEY_HERE
+# leleapi_pro=sk-YOUR_API_KEY_HERE
+
+[model_providers.codexzh]
+name = "codexzh"
+base_url = "https://api.codexzh.com/v1"
+wire_api = "responses"
+requires_openai_auth = true
+# [DEPRECATED in 0.160.0] web_search = "live"
+#Codexzh_Key=sk-YOUR_API_KEY_HERE
+
+
+[model_providers.OpenAI]
+requires_openai_auth = true
+name = "OpenAI"
+base_url = "http://newapi.aiproxy.sandboxol.cn/v1"
+# SandboxAPI=sk-YOUR_API_KEY_HERE
+wire_api = "responses"
+
+[model_providers.aigo]
+requires_openai_auth = true
+name = "aigo"
+base_url = "https://aigo.hair/v1"
+wire_api = "responses"
+#混合组=sk-YOUR_API_KEY_HERE
+# 稳定组=sk-YOUR_API_KEY_HERE
+# 保底组=sk-YOUR_API_KEY_HERE
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/super/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+CODEX_HOME = "/Users/super/.codex"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.903.71938"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/super/.codex/plugins/cache/openai-bundled/browser/26.903.71938/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+SKY_CUA_SERVICE_PATH = "/Users/super/.codex/computer-use/Codex Computer Use.app"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = false
+
+# [mcp_servers.idea]
+# url = "http://127.0.0.1:64342/stream"
+
+
+# [mcp_servers.intellij-index]
+# url = "http://127.0.0.1:29170/index-mcp/streamable-http"
+
+[projects."/Users/super/super/pickaxe"]
+trust_level = "trusted"
+
+[projects."/Users/super/demo"]
+trust_level = "trusted"
+
+[projects."/Users/super/super/blockymods"]
+trust_level = "trusted"
+
+[projects."/Users/super/tauri/audio-courier"]
+trust_level = "trusted"
+
+[projects."/Users/super"]
+trust_level = "trusted"
+
+[projects."/Users/super/super"]
+trust_level = "trusted"
+
+[projects."/Users/super/Documents/Codex/2026-07-10/new-chat"]
+trust_level = "trusted"
+
+[projects."/Users/super/super/blockman-go-android"]
+trust_level = "trusted"
+
+[projects."/Users/super/tauri/automatic-coder"]
+trust_level = "trusted"
+
+[projects."/Users/super/demo/blockman-go-android"]
+trust_level = "trusted"
+
+[projects."/Users/super/.codex"]
+trust_level = "trusted"
+
+[projects."/Users/super/WebstormProjects/exportFigmaAssets"]
+trust_level = "trusted"
+
+[projects."/Users/super/RustroverProjects/demo"]
+trust_level = "trusted"
+
+[projects."/Users/super/RustroverProjects/jackdaw"]
+trust_level = "trusted"
+
+[projects."/Users/super/RustroverProjects/bevy-script-squadron-runtime"]
+trust_level = "trusted"
+
+[projects."/Users/super/Documents/Codex/2026-09-05/new-chat"]
+trust_level = "trusted"
+
+[projects."/Users/super/demo/new-api"]
+trust_level = "trusted"
+
+[projects."/Users/super/super/blockmango-client"]
+trust_level = "trusted"
+
+[projects."/Users/super/Documents/Codex/2026-09-11/new-chat"]
+trust_level = "trusted"
+
+[projects."/Users/super/demo/hyperscoop"]
+trust_level = "trusted"
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."figma@openai-api-curated"]
+enabled = true
+
+[plugins."figma@openai-api-curated".mcp_servers.figma.tools.use_figma]
+approval_mode = "approve"
+
+[plugins."figma@openai-curated"]
+enabled = true
+
+[plugins."ponytail@ponytail"]
+enabled = false
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[tui]
+terminal_title = ["project-name", "git-branch", "run-state", "thread-title"]
+status_line_use_colors = true
+status_line = ["model-with-reasoning", "git-branch", "context-remaining", "used-tokens", "task-progress", "permissions", "run-state"]
+whimsy = false #去除星星特效
+screen_reader_detection_done = true
+theme = "coldark-dark"
+fullscreen_transcript = false
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+"gpt-5.6-sol" = 4
+"gpt-6.1-sol" = 4
+
+[marketplaces.openai-bundled]
+source_type = "local"
+source = "/Users/super/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+source_type = "local"
+source = "/Users/super/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[marketplaces.ponytail]
+last_updated = "2026-09-18T07:09:28Z"
+last_revision = "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156"
+source_type = "git"
+source = "https://github.com/DietrichGebert/ponytail.git"
+
+[features]
+js_repl = false
+memories = true
+goals = true
+prevent_idle_sleep = true
+
+[desktop]
+appearanceTheme = "dark"
+conversationDetailMode = "STEPS_PROSE"
+ambient-suggestions-enabled = true
+followUpQueueMode = "queue"
+
+[memories]
+use_memories = true
+generate_memories = true
+
+[hooks.state]
+
+[hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:session_start:0:0"]
+trusted_hash = "sha256:5f81d38f47448a1581c08ec877e044d9e04dd6f814dce3f2671f7a8edadd719b"
+
+[hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:6a6f42bc3b58d6262db38bfd74d7f340fcca2b09cdb134aad365063f0bfefca4"
+
+[hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:1423b56c1322f96c8f74c51c1e7ae9a047b904c1fa43ee9165d462fd7a6e70ef"

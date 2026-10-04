@@ -1,0 +1,3 @@
+# Profile: Gemini
+model = "gemini-3.8-flash"
+model_reasoning_effort = "medium"
