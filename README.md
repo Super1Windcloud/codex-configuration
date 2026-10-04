@@ -22,15 +22,21 @@
   - 保持目标工程编码风格一致性与增量构建友好性；
   - 交付前提供最小可验证证据。
 
-### 4. 零侵入多模型分层架构（Profiles）
+### 4. 上下文极简与工程纯净度（Context Hygiene）
+- **剔除办公文档插件污染**：默认关闭 `documents`、`presentations`、`spreadsheets`、`template-creator` 等非核心办公插件，每次交互**节省约 25KB 系统提示词与工具描述**，极大减少首字延迟并消除对核心代码逻辑的注意力干扰。
+- **全栈原生工具链与运行时**：
+  - 开启内置 `features.js_repl = true`，无需唤起外部 Node 进程即可极速运算 JS/JSON/正则；
+  - 规则库（`default.rules`）原生覆盖 `bun`、`node`、`rustup`、`rustc`、`adb`、`sqlite3`，开箱即用。
+
+### 5. 零侵入多模型分层架构（Profiles）
 告别每次手动改动 `config.toml` 注释切换模型：
 - 默认主干：`gpt-6-astra` (Reasoning: Medium)
 - 快速切换 Grok：`codex -p grok`
 - 快速切换 Gemini：`codex -p gemini`
 - 快速切换轻量模型：`codex -p fast`
 
-### 5. 高频规则池收敛（`rules/default.rules`）
-- 清理历史会话遗留的长篇一次性硬编码规则，收敛为通用的构建工具（`gradlew`、`cargo`、`brew`）与版本控制（`git`）前缀匹配。
+### 6. 高频规则池收敛（`rules/default.rules`）
+- 清理历史会话遗留的长篇一次性硬编码规则，收敛为通用的构建工具（`gradlew`、`cargo`、`brew`、`bun`、`node`、`adb`）与版本控制（`git`）前缀匹配。
 
 ---
 

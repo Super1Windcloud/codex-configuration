@@ -1,32 +1,26 @@
-model_provider = "aigo" #OpenAI，aigo
+model_provider = "stringai" # stringai, aigo, OpenAI, leleapi, codexzh
+# APIKEY=sk-YOUR_API_KEY_HERE
 # SandboxAPI=sk-YOUR_API_KEY_HERE
 # #混合组=sk-YOUR_API_KEY_HERE
 # 稳定组=sk-YOUR_API_KEY_HERE
 # 保底组=sk-YOUR_API_KEY_HERE
 # grok组=sk-YOUR_API_KEY_HERE
 # gemini组=sk-YOUR_API_KEY_HERE
-# [DEPRECATED in 0.160.0] windows_wsl_setup_acknowledged = true
-# [DEPRECATED in 0.160.0] network_access = "enabled"
 review_model = "gpt-5.5"
 notify = [ "/Users/super/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended" ]
 model_reasoning_effort = "medium"
 model = "gpt-6-astra"
-# model="gpt-6-astra"
-# grok_model="grok-4.7"
-# gemini-model="gemini-3.8-flash"
 service_tier = "fast"
 approvals_reviewer = "user"
-# [DEPRECATED in 0.160.0] disable_response_storage = false
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 
-
-# [DEPRECATED in 0.160.0 - 现代版本采用内置统一缓存池]
-# cache_size_mb = 512
-# cache_ttl = "30m"
-# smart_cache = true
-# cache_compression = true
-
+[model_providers.stringai]
+requires_openai_auth = true
+name = "stringai"
+base_url = "https://ai.qpcmqam.cn/v1"
+wire_api = "responses"
+# APIKEY=sk-YOUR_API_KEY_HERE
 
 [model_providers.leleapi]
 requires_openai_auth = true
@@ -99,23 +93,30 @@ enabled = false
 [projects."/Users/super"]
 trust_level = "trusted"
 
+[projects."/Users/super/super/blockman-go-android"]
+trust_level = "trusted"
+
+[projects."/Users/super/demo/hyperscoop"]
+trust_level = "trusted"
+
+# 上下文瘦身：禁用非编程核心的办公套件插件，节省约 25KB 系统提示词与工具描述
 [plugins."documents@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."visualize@openai-bundled"]
 enabled = true
 
 [plugins."presentations@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."spreadsheets@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."pdf@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."template-creator@openai-primary-runtime"]
-enabled = true
+enabled = false
 
 [plugins."figma@openai-api-curated"]
 enabled = true
@@ -170,7 +171,7 @@ source_type = "git"
 source = "https://github.com/DietrichGebert/ponytail.git"
 
 [features]
-js_repl = false
+js_repl = true
 memories = true
 goals = true
 prevent_idle_sleep = true
