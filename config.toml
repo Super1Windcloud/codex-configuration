@@ -96,64 +96,7 @@ enabled = false
 # [mcp_servers.intellij-index]
 # url = "http://127.0.0.1:29170/index-mcp/streamable-http"
 
-[projects."/Users/super/super/pickaxe"]
-trust_level = "trusted"
-
-[projects."/Users/super/demo"]
-trust_level = "trusted"
-
-[projects."/Users/super/super/blockymods"]
-trust_level = "trusted"
-
-[projects."/Users/super/tauri/audio-courier"]
-trust_level = "trusted"
-
 [projects."/Users/super"]
-trust_level = "trusted"
-
-[projects."/Users/super/super"]
-trust_level = "trusted"
-
-[projects."/Users/super/Documents/Codex/2026-07-10/new-chat"]
-trust_level = "trusted"
-
-[projects."/Users/super/super/blockman-go-android"]
-trust_level = "trusted"
-
-[projects."/Users/super/tauri/automatic-coder"]
-trust_level = "trusted"
-
-[projects."/Users/super/demo/blockman-go-android"]
-trust_level = "trusted"
-
-[projects."/Users/super/.codex"]
-trust_level = "trusted"
-
-[projects."/Users/super/WebstormProjects/exportFigmaAssets"]
-trust_level = "trusted"
-
-[projects."/Users/super/RustroverProjects/demo"]
-trust_level = "trusted"
-
-[projects."/Users/super/RustroverProjects/jackdaw"]
-trust_level = "trusted"
-
-[projects."/Users/super/RustroverProjects/bevy-script-squadron-runtime"]
-trust_level = "trusted"
-
-[projects."/Users/super/Documents/Codex/2026-09-05/new-chat"]
-trust_level = "trusted"
-
-[projects."/Users/super/demo/new-api"]
-trust_level = "trusted"
-
-[projects."/Users/super/super/blockmango-client"]
-trust_level = "trusted"
-
-[projects."/Users/super/Documents/Codex/2026-09-11/new-chat"]
-trust_level = "trusted"
-
-[projects."/Users/super/demo/hyperscoop"]
 trust_level = "trusted"
 
 [plugins."documents@openai-primary-runtime"]
@@ -231,6 +174,7 @@ js_repl = false
 memories = true
 goals = true
 prevent_idle_sleep = true
+multi_agent_v2 = true
 
 [desktop]
 appearanceTheme = "dark"
