@@ -1,26 +1,32 @@
-model_provider = "stringai" # stringai, aigo, OpenAI, leleapi, codexzh
-# APIKEY=sk-YOUR_API_KEY_HERE
+model_provider = "openai" # openai, aigo, stringai, wokey, shahe
 # SandboxAPI=sk-YOUR_API_KEY_HERE
 # #混合组=sk-YOUR_API_KEY_HERE
 # 稳定组=sk-YOUR_API_KEY_HERE
 # 保底组=sk-YOUR_API_KEY_HERE
 # grok组=sk-YOUR_API_KEY_HERE
 # gemini组=sk-YOUR_API_KEY_HERE
+# [DEPRECATED in 0.160.0] windows_wsl_setup_acknowledged = true
+# [DEPRECATED in 0.160.0] network_access = "enabled"
 review_model = "gpt-5.5"
 notify = [ "/Users/super/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended" ]
 model_reasoning_effort = "medium"
-model = "gpt-6-astra"
+model = "gpt-6.1-sol"
+# model="gpt-6-astra"
+# grok_model="grok-4.7"
+# gemini-model="gemini-3.8-flash"
 service_tier = "fast"
 approvals_reviewer = "user"
+# [DEPRECATED in 0.160.0] disable_response_storage = false
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 
-[model_providers.stringai]
-requires_openai_auth = true
-name = "stringai"
-base_url = "https://ai.qpcmqam.cn/v1"
-wire_api = "responses"
-# APIKEY=sk-YOUR_API_KEY_HERE
+
+# [DEPRECATED in 0.160.0 - 现代版本采用内置统一缓存池]
+# cache_size_mb = 512
+# cache_ttl = "30m"
+# smart_cache = true
+# cache_compression = true
+
 
 [model_providers.leleapi]
 requires_openai_auth = true
@@ -29,6 +35,21 @@ base_url = "https://leleapi.top/v1"
 wire_api = "responses"
 # leleapi_plus=sk-YOUR_API_KEY_HERE
 # leleapi_pro=sk-YOUR_API_KEY_HERE
+
+[model_providers.stringai]
+requires_openai_auth = true
+name = "stringai"
+base_url = "https://ai.qpcmqam.cn/v1"
+wire_api = "responses"
+#APIKEY=sk-YOUR_API_KEY_HERE
+
+[model_providers.wokey]
+requires_openai_auth = true
+name = "wokey"
+base_url = "https://api.wokey.ai"
+wire_api = "responses"
+#APIKEY=sk-YOUR_API_KEY_HERE
+
 
 [model_providers.codexzh]
 name = "codexzh"
@@ -39,9 +60,9 @@ requires_openai_auth = true
 #Codexzh_Key=sk-YOUR_API_KEY_HERE
 
 
-[model_providers.OpenAI]
+[model_providers.shahe]
 requires_openai_auth = true
-name = "OpenAI"
+name = "shahe"
 base_url = "http://newapi.aiproxy.sandboxol.cn/v1"
 # SandboxAPI=sk-YOUR_API_KEY_HERE
 wire_api = "responses"
@@ -51,37 +72,40 @@ requires_openai_auth = true
 name = "aigo"
 base_url = "https://aigo.hair/v1"
 wire_api = "responses"
-#混合组=sk-YOUR_API_KEY_HERE
-# 稳定组=sk-YOUR_API_KEY_HERE
-# 保底组=sk-YOUR_API_KEY_HERE
 
 [mcp_servers.node_repl]
-args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
-startup_timeout_sec = 120
+startup_timeout_sec = 120.0
 
 [mcp_servers.node_repl.env]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.903.71938"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+CODEX_HOME = "/Users/super/.codex"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/super/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
-CODEX_HOME = "/Users/super/.codex"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-BROWSER_USE_TINYSKY_ENABLED = "1"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
-NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.903.71938"
 NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/super/.codex/plugins/cache/openai-bundled/browser/26.903.71938/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 SKY_CUA_SERVICE_PATH = "/Users/super/.codex/computer-use/Codex Computer Use.app"
-CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 [mcp_servers.computer-use]
 command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
 args = ["mcp"]
 cwd = "."
 enabled = false
+
+[mcp_servers.scrcpy]
+command = "/opt/homebrew/bin/scrcpy-mcp"
+
+[mcp_servers.scrcpy.env]
+ADB_PATH = "/Users/super/Library/Android/sdk/platform-tools/adb"
+PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/super/Library/Android/sdk/platform-tools"
 
 # [mcp_servers.idea]
 # url = "http://127.0.0.1:64342/stream"
@@ -97,6 +121,15 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/super/demo/hyperscoop"]
+trust_level = "trusted"
+
+[projects."/Users/super/WebstormProjects/exportFigmaAssets"]
+trust_level = "trusted"
+
+[projects."/Users/super/super/blockman-go-android/Librarys/xlog-rs"]
+trust_level = "trusted"
+
+[projects."/Users/super/RustroverProjects/fuckport"]
 trust_level = "trusted"
 
 # 上下文瘦身：禁用非编程核心的办公套件插件，节省约 25KB 系统提示词与工具描述
@@ -145,11 +178,13 @@ enabled = true
 [tui]
 terminal_title = ["project-name", "git-branch", "run-state", "thread-title"]
 status_line_use_colors = true
-status_line = ["model-with-reasoning", "git-branch", "context-remaining", "used-tokens", "task-progress", "permissions", "run-state"]
+status_line = ["model-with-reasoning", "git-branch", "context-remaining", "used-tokens", "task-progress", "permissions", "run-state", "context-window-size", "five-hour-limit"]
 whimsy = false #去除星星特效
 screen_reader_detection_done = true
 theme = "coldark-dark"
 fullscreen_transcript = false
+notifications = true
+animations = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
@@ -165,8 +200,8 @@ source_type = "local"
 source = "/Users/super/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.ponytail]
-last_updated = "2026-09-18T07:09:28Z"
-last_revision = "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156"
+last_updated = "2026-10-15T11:26:04Z"
+last_revision = "84740e3d344b69b4a133201fa519eb37a62a2b2a"
 source_type = "git"
 source = "https://github.com/DietrichGebert/ponytail.git"
 
@@ -176,6 +211,7 @@ memories = true
 goals = true
 prevent_idle_sleep = true
 multi_agent_v2 = true
+daemon_auto_start = false
 
 [desktop]
 appearanceTheme = "dark"

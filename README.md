@@ -30,7 +30,7 @@
 
 ### 5. 零侵入多模型分层架构（Profiles）
 告别每次手动改动 `config.toml` 注释切换模型：
-- 默认主干：`gpt-6-astra` (Reasoning: Medium)
+- 默认主干：`gpt-6.1-sol` (Reasoning: Medium)
 - 高难架构与疑难调试（强推理）：`codex -p deep` (Reasoning: High, Priority Tier)
 - 专业代码自查与门禁：`codex -p review` (gpt-5.5)
 - 快速切换轻量模型：`codex -p fast`
@@ -38,7 +38,7 @@
 - 快速切换 Gemini：`codex -p gemini`
 
 ### 6. 高频规则池收敛（`rules/default.rules`）
-- 清理历史会话遗留的长篇一次性硬编码规则，收敛为通用的构建工具（`gradlew`、`cargo`、`brew`、`bun`、`node`、`adb`）、容器（`docker`、`podman`）与版本控制（`git`）前缀匹配。
+- 清理历史会话遗留的长篇一次性硬编码规则，同步本机通用命令前缀，覆盖 Rust、Android、Web、Python、Go、Apple/iOS 工具链，以及容器、GitHub、文件检查与归档命令。
 
 ---
 

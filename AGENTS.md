@@ -20,10 +20,12 @@
 
 - **风格一致性**：严格遵守目标工程现存的编码风格与架构规范（Java 保持 Java 风格、Kotlin 保持 Kotlin 风格、Rust 保持 Rust 风格），不得主观进行风格覆盖。
 - **最小代码集**：保持解决根因所需的最小改动范围。严禁为了局部需求引入跨模块重命名、大规模包路径迁移、大批量无关注释/格式化重排或依赖版本大升级。
-- **增量构建友好**：遵循工程依赖隔离原则，优先通过稳定接口协作，避免增加不必要的跨层强依赖，保护工程增量编译缓存：
-  - **Rust**：优先使用 `cargo check` 或单 crate `cargo test -p <pkg>`，严禁无故触发全量 `cargo clean`；
-  - **Android/Kotlin**：统一使用项目根目录的 `./gradlew` 驱动目标模块局部编译与单测（如 `:module:compileDebugKotlin`），禁止默认全量 `assemble`；
-  - **Web/前端**：严格遵守 lockfile（`pnpm-lock.yaml` / `bun.lockb`），严禁跨包管理器安装破坏依赖树。
+- **增量构建友好与本地缓存保护**：遵循工程依赖隔离原则，优先通过稳定接口协作，避免增加不必要的跨层强依赖，保护工程增量编译缓存：
+  - **优先复用本地缓存，严禁临时目录冷编译**：代码验证与测试必须在工程工作区就地执行，严禁以隔离为由复制/克隆工程到 `/tmp` 或新建临时无缓存目录执行全量冷编译；
+  - **Rust**：优先使用 `cargo check` 或单 crate `cargo test -p <pkg>`，复用 `target/` 增量缓存，严禁无故触发全量 `cargo clean`；
+  - **Android/Kotlin**：统一使用项目根目录的 `./gradlew` 驱动目标模块局部编译与单测（如 `:module:compileDebugKotlin`），复用 daemon 与 build cache，禁止默认全量 `assemble`；
+  - **Web/前端**：严格遵守 lockfile（`pnpm-lock.yaml` / `bun.lockb`），复用 `node_modules` 与本地构建缓存；
+  - **Worktree 必须共享缓存**：若因多分支必须使用 Git Worktree，必须软链接复用主库的 `node_modules`, `target`, `.gradle`, `.cache`, `.venv` 缓存目录。
 
 ## 4. 验证与交付标准
 
