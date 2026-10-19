@@ -77,6 +77,11 @@ def export_file(source, dest, home, ancestors=()):
         return
     dest.parent.mkdir(parents=True, exist_ok=True)
     data = source.read_bytes()
+    if 'skills' in source.parts:
+        # Keep upstream skill fixtures and resources intact, including fake credential examples.
+        dest.write_bytes(data)
+        shutil.copymode(source, dest)
+        return
     if source.name in ('settings.json', 'opencode.json', 'cli.json'):
         data = (json.dumps(clean(json.loads(data), home), ensure_ascii=False, indent=2) + '\n').encode()
     elif source.name == 'config.toml' or source.name.endswith('.config.toml'):
@@ -126,6 +131,9 @@ def sync(repo, home):
     with tempfile.TemporaryDirectory(prefix='harness-sync-') as temporary:
         staging = Path(temporary)
         manifest = catalog(home)
+        previous = read_json(repo / 'plugins.json')
+        if previous.get('opencode_skill_sources'):
+            manifest['opencode_skill_sources'] = previous['opencode_skill_sources']
         for harness, names in FILES.items():
             for name in names:
                 source = home / LOCATIONS[harness] / name
@@ -224,6 +232,10 @@ def install(repo, home, selected, dry=False, offline=False):
             for path in sorted((repo / 'profiles').glob('*.config.toml')):
                 deploy(path, home / '.codex' / path.name)
 
+    if 'shared' in selected:
+        for harness in ('claude', 'opencode'):
+            if harness in selected:
+                deploy(config_dir(repo, 'shared') / 'skills', home / LOCATIONS[harness] / 'skills')
     manifest = read_json(repo / 'plugins.json')
     for harness in ('codex', 'claude'):
         if harness not in selected:

@@ -105,6 +105,24 @@ class HarnessTest(unittest.TestCase):
                 self.quiet(harness.install, self.repo, self.home, ['codex'])
         self.assertIn('enabled=false', (self.home / '.codex/config.toml').read_text())
 
+    def test_sync_preserves_sources_after_external_link_is_removed(self):
+        sources = [{'url': 'https://example.invalid/skills.git', 'ref': 'commit', 'subdir': 'skills'}]
+        self.write('plugins.json', json.dumps({'opencode_skill_sources': sources}), self.repo)
+        self.quiet(harness.sync, self.repo, self.home)
+        self.assertEqual(json.loads((self.repo / 'plugins.json').read_text())['opencode_skill_sources'], sources)
+
+    def test_skill_fixtures_are_exported_without_modification(self):
+        text = 'https://user:fake@api.example.invalid/fixture'
+        self.write('.agents/skills/example/SKILL.md', text)
+        self.quiet(harness.sync, self.repo, self.home)
+        self.assertEqual((self.repo / 'harness/shared/skills/example/SKILL.md').read_text(), text)
+
+    def test_shared_skills_are_installed_in_native_directories(self):
+        self.write('harness/shared/skills/example/SKILL.md', 'skill', self.repo)
+        self.quiet(harness.install, self.repo, self.home, ['claude', 'opencode', 'shared'], offline=True)
+        for directory in ('.claude', '.config/opencode'):
+            self.assertEqual((self.home / directory / 'skills/example/SKILL.md').read_text(), 'skill')
+
 
 if __name__ == '__main__':
     unittest.main()

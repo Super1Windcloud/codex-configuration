@@ -43,6 +43,7 @@
 - 覆盖前备份到 `~/.harness-backups/<时间>/`，保留原目录结构；不清空用户 skills、不删除其他配置文件。
 - JSON 配置合并写入，保留本机未入库的凭据；Codex 保留本机项目 trust 与桌面运行时 marketplace 配置。
 - 拒绝通过目标软链接覆盖文件，避免写入其他目录。
+- 共享 skills 同时部署到所选 Claude Code、OpenCode 的原生 skills 目录；保留 skill 原始资源及测试样例。旧 OpenCode 链接移除后，再次同步仍保留已记录的外部 skill 来源。
 - 有 Git 来源的 Codex 插件使用 `codex plugin add`；Claude 插件使用 `claude plugin install`，不会通过伪造 `installed_plugins.json` 冒充安装成功。
 - 插件安装后恢复配置中的启用状态，包括已禁用的插件。失败会返回非零退出码，不会报告全部成功。
 - OpenCode 外部 Testkit skills 按清单固定的 Git commit 恢复；依赖存在 npm 锁文件时使用 `npm ci`。`opencode.json` 的 npm 插件由 OpenCode 启动时自动安装。[OpenCode 官方说明](https://dev.opencode.ai/docs/plugins/)
