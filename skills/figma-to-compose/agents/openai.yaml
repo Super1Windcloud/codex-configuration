@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma to Compose"
+  short_description: "Turn Figma frames into production-ready Compose UI"
+  default_prompt: "Use $figma-to-compose to implement this Figma frame in Jetpack Compose."
