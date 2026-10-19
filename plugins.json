@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "codex": [
+    {
+      "id": "browser@openai-bundled",
+      "enabled": true,
+      "source": null
+    },
+    {
+      "id": "codex-app-tools@openai-bundled",
+      "enabled": true,
+      "source": null
+    },
+    {
+      "id": "computer-use@openai-bundled",
+      "enabled": true,
+      "source": null
+    },
+    {
+      "id": "documents@openai-primary-runtime",
+      "enabled": false,
+      "source": null
+    },
+    {
+      "id": "figma@openai-api-curated",
+      "enabled": true,
+      "source": null
+    },
+    {
+      "id": "figma@openai-curated",
+      "enabled": true,
+      "source": null
+    },
+    {
+      "id": "openai-templates@openai-curated-remote",
+      "enabled": null,
+      "source": null
+    },
+    {
+      "id": "pages@openai-curated-remote",
+      "enabled": null,
+      "source": null
+    },
+    {
+      "id": "pdf@openai-primary-runtime",
+      "enabled": false,
+      "source": null
+    },
+    {
+      "id": "plugin-management@openai-curated-remote",
+      "enabled": null,
+      "source": null
+    },
+    {
+      "id": "ponytail@ponytail",
+      "enabled": false,
+      "source": "https://github.com/DietrichGebert/ponytail.git"
+    },
+    {
+      "id": "presentations@openai-primary-runtime",
+      "enabled": false,
+      "source": null
+    },
+    {
+      "id": "sites@openai-curated-remote",
+      "enabled": null,
+      "source": null
+    },
+    {
+      "id": "spreadsheets@openai-primary-runtime",
+      "enabled": false,
+      "source": null
+    },
+    {
+      "id": "template-creator@openai-primary-runtime",
+      "enabled": false,
+      "source": null
+    },
+    {
+      "id": "testkit@testkit-marketplace",
+      "enabled": true,
+      "source": "https://github.com/winhok/testkit.git"
+    },
+    {
+      "id": "unified-computer-use@openai-bundled",
+      "enabled": true,
+      "source": null
+    },
+    {
+      "id": "visualize@openai-bundled",
+      "enabled": true,
+      "source": null
+    },
+    {
+      "id": "work-pets@openai-curated-remote",
+      "enabled": null,
+      "source": null
+    }
+  ],
+  "claude": [
+    {
+      "id": "figma@claude-plugins-official",
+      "source": "anthropics/claude-plugins-official"
+    },
+    {
+      "id": "frontend-design@claude-plugins-official",
+      "source": "anthropics/claude-plugins-official"
+    },
+    {
+      "id": "claude-code-setup@claude-plugins-official",
+      "source": "anthropics/claude-plugins-official"
+    },
+    {
+      "id": "testkit@testkit",
+      "source": "winhok/testkit"
+    }
+  ],
+  "opencode_skill_sources": [
+    {
+      "url": "https://github.com/winhok/testkit.git",
+      "ref": "0c80ac38944bb70c6a60305c174dbc2a6a9767f2",
+      "subdir": "skills"
+    }
+  ]
+}

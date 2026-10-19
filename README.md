@@ -1,107 +1,71 @@
-# Codex CLI Configuration
+# Codex / Claude Code / OpenCode 配置同步
 
-⚡ 面向极速开发、全场景感知与工程规范的 **OpenAI Codex CLI** 生产级全套配置套件。
+保留原有 Codex 仓库布局，统一同步三套 harness 的全局指令、配置、agents、skills 和插件来源。现有 Claude Code、OpenCode 仓库保持独立，本仓库不修改它们的 Git 状态，也不自动提交或推送。
 
----
+需要 Python 3.11+、Git，以及需要安装插件的对应 CLI。OpenCode 本地插件依赖需要 npm。MCP 所依赖的 Android SDK、Homebrew 工具和 ChatGPT 桌面运行时仍需在目标机器准备。
 
-## ✨ 核心优化与架构特性
-
-### 1. 终端标题与状态栏全方位升级
-- **终端标题（`terminal_title`）自适应**：
-  采用 `["project-name", "git-branch", "run-state", "thread-title"]` 排版策略，彻底解决多 Tab / 分屏下（15~25 字符）被冗长路径塞满导致截断的问题，一眼即辨仓库与任务。
-- **状态栏（`status_line`）双维度 Token 与进度透视**：
-  不仅展示剩余百分比（`context-remaining`），更补齐绝对消耗量（`used-tokens`）与 Agent 任务步骤感知（`task-progress`），去除静态占位的冗余项。
-
-### 2. 严格模式（`--strict-config`）零警告零废弃
-- 全面清洗了在 `codex-cli 0.160.0` 中已废弃的 8 个历史死配置（WSL 标记、旧版内存缓存参数、无效网络字段等），保证配置 100% 结构化合法。
-
-### 3. 全局 Agent 开发契约（`AGENTS.md`）
-- 确立跨项目通用的行为防线：
-  - 严禁裸 `cd` 命令；
-  - 严格遵守 Conventional Commits 并输出结构化提交信息；
-  - 保持目标工程编码风格一致性与增量构建友好性；
-  - 交付前提供最小可验证证据。
-
-### 4. 上下文极简与工程纯净度（Context Hygiene）
-- **剔除办公文档插件污染**：默认关闭 `documents`、`presentations`、`spreadsheets`、`template-creator` 等非核心办公插件，每次交互**节省约 25KB 系统提示词与工具描述**，极大减少首字延迟并消除对核心代码逻辑的注意力干扰。
-- **全栈原生工具链与运行时**：
-  - 开启内置 `features.js_repl = true`，无需唤起外部 Node 进程即可极速运算 JS/JSON/正则；
-  - 规则库（`default.rules`）原生覆盖 `bun`、`node`、`rustup`、`rustc`、`adb`、`sqlite3`，开箱即用。
-
-### 5. 零侵入多模型分层架构（Profiles）
-告别每次手动改动 `config.toml` 注释切换模型：
-- 默认主干：`gpt-6.1-sol` (Reasoning: Medium)
-- 高难架构与疑难调试（强推理）：`codex -p deep` (Reasoning: High, Priority Tier)
-- 专业代码自查与门禁：`codex -p review` (gpt-5.5)
-- 快速切换轻量模型：`codex -p fast`
-- 快速切换 Grok：`codex -p grok`
-- 快速切换 Gemini：`codex -p gemini`
-
-### 6. 高频规则池收敛（`rules/default.rules`）
-- 清理历史会话遗留的长篇一次性硬编码规则，同步本机通用命令前缀，覆盖 Rust、Android、Web、Python、Go、Apple/iOS 工具链，以及容器、GitHub、文件检查与归档命令。
-
----
-
-## 🚀 一键安装
+## 同步本机配置到仓库
 
 ```bash
-git clone git@github.com:Super1Windcloud/codex-configuration.git
-cd codex-configuration
-./install.sh
+~/super/codex-configuration/sync.sh
 ```
 
-安装脚本将自动执行以下操作：
-1. 自动备份现存的 `config.toml`、`AGENTS.md` 与 `default.rules` 为 `.bak`；
-2. 部署优化版全局配置、Agent 指令集、Profile 分层包与执行规则；
-3. 执行 `codex --strict-config` 自动化验收。
+从 `~/.codex`、`~/.claude`、`~/.config/opencode` 和 `~/.agents` 导出；完成后通过 `git diff` 审查，再自行提交。同步采用增量覆盖，不自动删除仓库中已维护的文件；停用资源需要显式从仓库移除。
 
----
+| 仓库位置 | 同步内容 | 安装位置 |
+| --- | --- | --- |
+| `AGENTS.md`、`config.toml`、`profiles/`、`rules/`、`skills/`、`agents/` | Codex 全局指令、配置、模型 profiles、规则、用户及系统 skills、自定义 agents | `~/.codex/` |
+| `harness/claude/` | `CLAUDE.md`、settings、状态栏、hooks、skills、agents、commands | `~/.claude/` |
+| `harness/opencode/` | 全局 `AGENTS.md`（存在时）、配置、依赖锁文件、skills、agents、commands、plugins、tools、themes | `~/.config/opencode/` |
+| `harness/shared/` | 全局 `AGENTS.md`（存在时）与共享 skills，包括配套 scripts、references、assets | `~/.agents/` |
+| `plugins.json` | Codex / Claude 插件安装标识、来源和 Codex 启用状态；外部 skill 来源 | 通过对应 CLI 安装 |
 
-## 🛠️ 文件目录结构
+可用 `sync.sh --home /path/to/home` 从指定用户目录导出。正常 skill 软链接会展开为实际文件，循环或失效链接会中止导出。旧 OpenCode `testkit` 失效链接有明确的上游来源，转为安装来源记录，在安装时恢复成 `skills/<name>/SKILL.md`。
 
-```text
-.
-├── LICENSE                     # MIT 开源许可证
-├── README.md                   # 详细使用与架构说明
-├── install.sh                  # 一键部署与无缝升级脚本
-├── .env.example                # 环境变量配置模板
-├── config.toml                 # 核心主配置（已脱敏 API Token）
-├── AGENTS.md                   # 全局 Agent 行为规范与全栈工程交付契约
-├── profiles/                   # 模型分层 Profiles
-│   ├── deep.config.toml        # 高推理重构与架构配置 (Reasoning: High)
-│   ├── review.config.toml      # 代码质量门禁审计配置 (gpt-5.5)
-│   ├── fast.config.toml        # 轻量极速模型配置 (gpt-5.5)
-│   ├── gemini.config.toml      # Gemini 3.8 Flash 配置
-│   └── grok.config.toml        # Grok 4.7 配置
-└── rules/                      # 命令执行权限规则
-    └── default.rules           # 精简收敛的通用规则白名单
+## 自动安装
+
+```bash
+# 先预览；不改动本机配置、不联网安装
+~/super/codex-configuration/install.sh --dry-run
+
+# 安装全部 harness、共享 skills，并恢复有来源的第三方插件
+~/super/codex-configuration/install.sh
+
+# 仅安装 Codex 及共享 skills
+~/super/codex-configuration/install.sh --only codex shared
+
+# 离线部署仓库文件；输出尚未安装的插件和外部依赖
+~/super/codex-configuration/install.sh --offline
 ```
 
----
+新机器可以先克隆本仓库，再以绝对路径运行 `install.sh`。
 
-## 💡 推荐 Zsh 终端集成
+- 覆盖前备份到 `~/.harness-backups/<时间>/`，保留原目录结构；不清空用户 skills、不删除其他配置文件。
+- JSON 配置合并写入，保留本机未入库的凭据；Codex 保留本机项目 trust 与桌面运行时 marketplace 配置。
+- 拒绝通过目标软链接覆盖文件，避免写入其他目录。
+- 有 Git 来源的 Codex 插件使用 `codex plugin add`；Claude 插件使用 `claude plugin install`，不会通过伪造 `installed_plugins.json` 冒充安装成功。
+- 插件安装后恢复配置中的启用状态，包括已禁用的插件。失败会返回非零退出码，不会报告全部成功。
+- OpenCode 外部 Testkit skills 按清单固定的 Git commit 恢复；依赖存在 npm 锁文件时使用 `npm ci`。`opencode.json` 的 npm 插件由 OpenCode 启动时自动安装。[OpenCode 官方说明](https://dev.opencode.ai/docs/plugins/)
+- Codex 内置、远程账号或工作区管理的插件记录在清单中，但不搬运运行时缓存或绕过账号授权。没有可移植来源的项目会逐项列出，需要对应客户端或账号恢复；可移植插件使用官方 CLI。[Codex CLI 说明](https://learn.chatgpt.com/docs/cli/reference)
 
-将以下别名添加到你的 `~/.zshrc` 中以获得丝滑交互体验：
+第三方 marketplace 插件恢复的是该市场当前提供的版本；清单不承诺固定所有插件版本。插件提供的 skills 随插件安装恢复，不再作为独立用户 skill 重复复制。Codex `.system` skills 已入库，但仍可能被未来客户端更新覆盖。
 
-```zsh
-# 启用 Codex 官方 Zsh 自动补全
-if command -v codex >/dev/null 2>&1; then
-  eval "$(codex completion zsh)"
-fi
+`install.sh --home /path/to/home` 可部署到指定用户目录，插件命令会使用对应 `HOME`、`CODEX_HOME`、`CLAUDE_CONFIG_DIR` 与 `XDG_CONFIG_HOME`。脚本不会安装 Codex、Claude Code、OpenCode CLI 本身，也不会启动模型会话或自动重启服务。
 
-# 常用高频别名
-alias cx="codex"
-alias cxr="codex resume --last"     # 一秒接续上次工作上下文
-alias cxd="codex -p deep"           # 启动高推理深度模型（架构重构/死锁并发排查）
-alias cxv="codex -p review"         # 启动代码审计评审
-alias cxg="codex -p grok"           # 启动 Grok 模型
-alias cxm="codex -p gemini"         # 启动 Gemini 模型
-alias cxf="codex -p fast"           # 启动轻量快速模型
-alias cxe="codex exec"              # 快速非交互运行
+## 凭据与本机数据
+
+采用文件白名单，不导出 `auth.json`、`service.json`、会话、日志、数据库、node_modules、插件缓存和 Git 元数据。JSON 配置剔除常见 API key、token、password、Authorization 字段；Codex TOML 剔除凭据字段、含密钥的注释和本机项目 trust。环境变量引用保留，配置及脚本中的用户主目录转为 `~/`，安装时展开。
+
+自定义脚本、skills 和任意字段可能包含不符合常见格式的凭据，仍需审查导出结果。API 凭据由本机环境或客户端登录提供；外部市场认证与受账号管理的插件仍需目标机器具备对应权限。
+
+## 验证
+
+```bash
+python3 -B -m unittest discover -s ~/super/codex-configuration/tests -v
+bash -n ~/super/codex-configuration/install.sh ~/super/codex-configuration/sync.sh
+~/super/codex-configuration/install.sh --dry-run
 ```
 
----
+自动化用例覆盖凭据过滤、skill 软链接实体化、预览无副作用、覆盖备份、本机凭据/trust 保留、目标软链接保护、真实插件命令及启用状态恢复、插件失败返回。CLI 行为由模拟命令验证；联网安装应单独报告实际执行结果。
 
-## 📄 License
-
-[MIT](LICENSE) © SuperWindcloud
+[MIT License](LICENSE)

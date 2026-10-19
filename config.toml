@@ -1,14 +1,8 @@
 model_provider = "openai" # openai, aigo, stringai, wokey, shahe
-# SandboxAPI=sk-YOUR_API_KEY_HERE
-# #混合组=sk-YOUR_API_KEY_HERE
-# 稳定组=sk-YOUR_API_KEY_HERE
-# 保底组=sk-YOUR_API_KEY_HERE
-# grok组=sk-YOUR_API_KEY_HERE
-# gemini组=sk-YOUR_API_KEY_HERE
 # [DEPRECATED in 0.160.0] windows_wsl_setup_acknowledged = true
 # [DEPRECATED in 0.160.0] network_access = "enabled"
 review_model = "gpt-5.5"
-notify = [ "/Users/super/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended" ]
+notify = [ "~/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended" ]
 model_reasoning_effort = "medium"
 model = "gpt-6.1-sol"
 # model="gpt-6-astra"
@@ -33,22 +27,18 @@ requires_openai_auth = true
 name = "leleapi"
 base_url = "https://leleapi.top/v1"
 wire_api = "responses"
-# leleapi_plus=sk-YOUR_API_KEY_HERE
-# leleapi_pro=sk-YOUR_API_KEY_HERE
 
 [model_providers.stringai]
 requires_openai_auth = true
 name = "stringai"
 base_url = "https://ai.qpcmqam.cn/v1"
 wire_api = "responses"
-#APIKEY=sk-YOUR_API_KEY_HERE
 
 [model_providers.wokey]
 requires_openai_auth = true
 name = "wokey"
 base_url = "https://api.wokey.ai"
 wire_api = "responses"
-#APIKEY=sk-YOUR_API_KEY_HERE
 
 
 [model_providers.codexzh]
@@ -57,14 +47,12 @@ base_url = "https://api.codexzh.com/v1"
 wire_api = "responses"
 requires_openai_auth = true
 # [DEPRECATED in 0.160.0] web_search = "live"
-#Codexzh_Key=sk-YOUR_API_KEY_HERE
 
 
 [model_providers.shahe]
 requires_openai_auth = true
 name = "shahe"
 base_url = "http://newapi.aiproxy.sandboxol.cn/v1"
-# SandboxAPI=sk-YOUR_API_KEY_HERE
 wire_api = "responses"
 
 [model_providers.aigo]
@@ -83,16 +71,16 @@ BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
 BROWSER_USE_CODEX_APP_VERSION = "26.903.71938"
 BROWSER_USE_TINYSKY_ENABLED = "1"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
-CODEX_HOME = "/Users/super/.codex"
+CODEX_HOME = "~/.codex"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/super/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/super/.codex/plugins/cache/openai-bundled/browser/26.903.71938/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
-SKY_CUA_SERVICE_PATH = "/Users/super/.codex/computer-use/Codex Computer Use.app"
+NODE_REPL_TRUSTED_CODE_PATHS = "~/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"~/.codex/plugins/cache/openai-bundled/browser/26.903.71938/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+SKY_CUA_SERVICE_PATH = "~/.codex/computer-use/Codex Computer Use.app"
 
 [mcp_servers.computer-use]
 command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
@@ -104,17 +92,17 @@ enabled = false
 command = "/opt/homebrew/bin/scrcpy-mcp"
 
 [mcp_servers.scrcpy.env]
-ADB_PATH = "/Users/super/Library/Android/sdk/platform-tools/adb"
-PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/super/Library/Android/sdk/platform-tools"
+ADB_PATH = "~/Library/Android/sdk/platform-tools/adb"
+PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:~/Library/Android/sdk/platform-tools"
 
 [mcp_servers.mobile-mcp]
 command = "/opt/homebrew/bin/npx"
 args = ["-y", "@mobilenext/mobile-mcp@latest"]
 
 [mcp_servers.mobile-mcp.env]
-ANDROID_HOME = "/Users/super/Library/Android/sdk"
-ANDROID_SDK_ROOT = "/Users/super/Library/Android/sdk"
-PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/super/Library/Android/sdk/platform-tools"
+ANDROID_HOME = "~/Library/Android/sdk"
+ANDROID_SDK_ROOT = "~/Library/Android/sdk"
+PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:~/Library/Android/sdk/platform-tools"
 
 # [mcp_servers.idea]
 # url = "http://127.0.0.1:64342/stream"
@@ -123,28 +111,6 @@ PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/su
 # [mcp_servers.intellij-index]
 # url = "http://127.0.0.1:29170/index-mcp/streamable-http"
 
-[projects."/Users/super"]
-trust_level = "trusted"
-
-[projects."/Users/super/super/blockman-go-android"]
-trust_level = "trusted"
-
-[projects."/Users/super/demo/hyperscoop"]
-trust_level = "trusted"
-
-[projects."/Users/super/WebstormProjects/exportFigmaAssets"]
-trust_level = "trusted"
-
-[projects."/Users/super/super/blockman-go-android/Librarys/xlog-rs"]
-trust_level = "trusted"
-
-[projects."/Users/super/RustroverProjects/fuckport"]
-trust_level = "trusted"
-
-[projects."/Users/super/super/codex-configuration"]
-trust_level = "trusted"
-
-# 上下文瘦身：禁用非编程核心的办公套件插件，节省约 25KB 系统提示词与工具描述
 [plugins."documents@openai-primary-runtime"]
 enabled = false
 
@@ -205,14 +171,6 @@ animations = true
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
 "gpt-6.1-sol" = 4
-
-[marketplaces.openai-bundled]
-source_type = "local"
-source = "/Users/super/.codex/.tmp/bundled-marketplaces/openai-bundled"
-
-[marketplaces.openai-primary-runtime]
-source_type = "local"
-source = "/Users/super/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.ponytail]
 last_updated = "2026-10-15T11:26:04Z"

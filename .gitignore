@@ -28,3 +28,8 @@ computer-use/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Python and harness install backups
+__pycache__/
+*.pyc
+.harness-backups/
