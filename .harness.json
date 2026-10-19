@@ -1,0 +1,11 @@
+{
+  "roots": {
+    "codex": "."
+  },
+  "selected": [
+    "codex",
+    "claude",
+    "opencode",
+    "shared"
+  ]
+}

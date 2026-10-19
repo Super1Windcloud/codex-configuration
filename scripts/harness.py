@@ -14,18 +14,32 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCATIONS = {'codex': '.codex', 'claude': '.claude', 'opencode': '.config/opencode', 'shared': '.agents'}
+LOCATIONS.update({'antigravity': '.gemini/antigravity-cli', 'antigravity-global': '.gemini/config'})
 FILES = {
-    'codex': ['AGENTS.md', 'config.toml', 'rules', 'skills', 'agents'],
-    'claude': ['CLAUDE.md', 'settings.json', 'statusline-command.sh', 'hooks', 'skills', 'agents', 'commands'],
+    'codex': ['AGENTS.md', 'config.toml', 'rules', 'agents'],
+    'claude': ['CLAUDE.md', 'settings.json', 'statusline-command.sh', 'hooks', 'agents', 'commands'],
     'opencode': ['AGENTS.md', 'opencode.json', 'opencode.jsonc', 'cli.json', 'package.json',
-                 'package-lock.json', 'bun.lock', 'bun.lockb', 'skills', 'agents', 'commands', 'plugins', 'tools', 'themes'],
-    'shared': ['AGENTS.md', 'skills'],
+                 'package-lock.json', 'bun.lock', 'bun.lockb', 'agents', 'commands', 'plugins', 'tools', 'themes'],
+    'shared': ['AGENTS.md'],
+    'antigravity': ['AGENTS.md', 'settings.json', 'statusline.sh'],
+    'antigravity-global': ['GEMINI.md', 'AGENTS.md', 'agents', 'rules', 'workflows'],
 }
+TESTKIT_SOURCE = {'url': 'https://github.com/winhok/testkit.git',
+                  'ref': '0c80ac38944bb70c6a60305c174dbc2a6a9767f2', 'subdir': 'skills'}
+
+
+def is_testkit(plugin):
+    return plugin['id'].split('@', 1)[0].lower() == 'testkit'
+
+
 IGNORE = {'.git', '.DS_Store', '__pycache__', 'node_modules', '.venv', '.cache'}
 SECRET = re.compile(r'(?i)(api[_-]?key|auth[_-]?token|access[_-]?token|refresh[_-]?token|password|secret|authorization|bearer|http_headers|env_http_headers)$')
 
 
 def config_dir(repo, harness):
+    layout = read_json(repo / '.harness.json')
+    if harness in layout.get('roots', {}):
+        return repo / layout['roots'][harness]
     return repo if harness == 'codex' else repo / 'harness' / harness
 
 
@@ -78,12 +92,15 @@ def export_file(source, dest, home, ancestors=()):
     dest.parent.mkdir(parents=True, exist_ok=True)
     data = source.read_bytes()
     if 'skills' in source.parts:
-        # Keep upstream skill fixtures and resources intact, including fake credential examples.
+        # Skill fixtures may intentionally contain fake credentials; keep the package intact.
         dest.write_bytes(data)
         shutil.copymode(source, dest)
         return
     if source.name in ('settings.json', 'opencode.json', 'cli.json'):
-        data = (json.dumps(clean(json.loads(data), home), ensure_ascii=False, indent=2) + '\n').encode()
+        parsed = clean(json.loads(data), home)
+        if source.parent.name == 'antigravity-cli':
+            parsed.pop('trustedWorkspaces', None)
+        data = (json.dumps(parsed, ensure_ascii=False, indent=2) + '\n').encode()
     elif source.name == 'config.toml' or source.name.endswith('.config.toml'):
         data = portable_toml(data.decode(), home).encode()
     else:
@@ -123,39 +140,46 @@ def catalog(home):
         if any(i.get('scope') == 'user' for i in installs):
             source = markets.get(selector.rsplit('@', 1)[-1], {}).get('source', {})
             claude.append({'id': selector, 'source': source.get('repo') or source.get('url')})
-    return clean({'version': 1, 'codex': codex, 'claude': claude}, home)
+    return clean({'version': 1, 'codex': [p for p in codex if is_testkit(p)],
+                  'claude': [p for p in claude if is_testkit(p)]}, home)
 
 
-def sync(repo, home):
+def sync(repo, home, selected=None):
+    selected = selected or list(LOCATIONS)
     # A failed export must not copy a partial configuration into the repository.
     with tempfile.TemporaryDirectory(prefix='harness-sync-') as temporary:
         staging = Path(temporary)
         manifest = catalog(home)
+        manifest = {key: value for key, value in manifest.items() if key == 'version' or key in selected}
         previous = read_json(repo / 'plugins.json')
-        if previous.get('opencode_skill_sources'):
-            manifest['opencode_skill_sources'] = previous['opencode_skill_sources']
-        for harness, names in FILES.items():
+        legacy = previous.get('opencode_skill_sources', [])
+        manifest['testkit_skill_source'] = previous.get('testkit_skill_source') or (legacy[0] if legacy else dict(TESTKIT_SOURCE))
+        layout = repo / '.harness.json'
+        if layout.exists():
+            shutil.copy2(layout, staging / layout.name)
+        for harness in selected:
+            names = FILES[harness]
             for name in names:
                 source = home / LOCATIONS[harness] / name
-                if harness == 'opencode' and name == 'skills' and source.is_dir():
-                    for item in sorted(source.iterdir()):
-                        if item.name == 'testkit' and item.is_symlink() and not item.exists():
-                            manifest['opencode_skill_sources'] = [{
-                                'url': 'https://github.com/winhok/testkit.git',
-                                'ref': '0c80ac38944bb70c6a60305c174dbc2a6a9767f2', 'subdir': 'skills'}]
-                            continue
-                        export_file(item, config_dir(staging, harness) / name / item.name, home)
-                else:
-                    export_file(source, config_dir(staging, harness) / name, home)
-        for path in (home / '.codex').glob('*.config.toml'):
-            export_file(path, staging / 'profiles' / path.name, home)
+                export_file(source, config_dir(staging, harness) / name, home)
+        if 'codex' in selected:
+            for path in (home / '.codex').glob('*.config.toml'):
+                export_file(path, staging / 'profiles' / path.name, home)
+        defaults = {
+            'codex': [{'id': 'testkit@testkit-marketplace', 'source': TESTKIT_SOURCE['url'], 'enabled': True}],
+            'claude': [{'id': 'testkit@testkit', 'source': 'winhok/testkit'}],
+            'antigravity': [{'id': 'testkit', 'source': TESTKIT_SOURCE['url']}],
+        }
+        for harness in selected:
+            if harness in defaults and not manifest.get(harness):
+                manifest[harness] = defaults[harness]
         (staging / 'plugins.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
         for source in sorted(staging.rglob('*')):
             if source.is_file():
                 dest = repo / source.relative_to(staging)
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, dest)
-    print('已同步 Codex、Claude Code、OpenCode、共享 skills 和插件来源清单。')
+    print('已同步：' + ', '.join(selected) + '，技能安装仅保留 Testkit。')
 
 
 def merge_dict(old, new):
@@ -180,6 +204,8 @@ def install(repo, home, selected, dry=False, offline=False):
 
     def deploy(source, dest):
         nonlocal count
+        if source.name == 'testkit' and source.is_symlink() and not source.exists() and 'opencode' in selected:
+            return  # Migrated from the legacy link to directly discoverable skill directories.
         current = dest
         while current != home:
             if current.is_symlink():
@@ -225,22 +251,29 @@ def install(repo, home, selected, dry=False, offline=False):
         if source.name in ('config.toml', 'settings.json'):
             saved_configs[dest] = data
 
+    if 'opencode' in selected:
+        legacy = home / LOCATIONS['opencode'] / 'skills/testkit'
+        if legacy.is_symlink() and os.readlink(legacy) in ('../vendor/testkit/skills', '../../../.claude/plugins/marketplaces/testkit/skills'):
+            print('迁移旧 Testkit 软链接为 skills/<name>/SKILL.md')
+            if not dry:
+                saved = backup / legacy.relative_to(home)
+                saved.parent.mkdir(parents=True, exist_ok=True)
+                backup.chmod(0o700)
+                shutil.copy2(legacy, saved, follow_symlinks=False)
+                legacy.unlink()
     for harness in selected:
         for name in FILES[harness]:
             deploy(config_dir(repo, harness) / name, home / LOCATIONS[harness] / name)
         if harness == 'codex':
             for path in sorted((repo / 'profiles').glob('*.config.toml')):
                 deploy(path, home / '.codex' / path.name)
-
-    if 'shared' in selected:
-        for harness in ('claude', 'opencode'):
-            if harness in selected:
-                deploy(config_dir(repo, 'shared') / 'skills', home / LOCATIONS[harness] / 'skills')
     manifest = read_json(repo / 'plugins.json')
     for harness in ('codex', 'claude'):
         if harness not in selected:
             continue
         for plugin in manifest.get(harness, []):
+            if not is_testkit(plugin):
+                continue
             if not plugin['source']:
                 pending.append(f"{plugin['id']}：由客户端或账号管理，无可移植安装源")
                 continue
@@ -264,12 +297,29 @@ def install(repo, home, selected, dry=False, offline=False):
     for path, data in saved_configs.items():
         path.write_bytes(data)
 
-    if 'opencode' in selected:
-        target = home / LOCATIONS['opencode']
-        for source in manifest.get('opencode_skill_sources', []):
-            if offline:
-                pending.append('OpenCode 外部 skill：离线模式未安装')
+    if 'antigravity' in selected:
+        for plugin in manifest.get('antigravity', []):
+            if not is_testkit(plugin):
                 continue
+            if offline or not plugin['source'] or (not shutil.which('agy') and not dry):
+                pending.append(f"{plugin['id']}：离线模式、无来源或未找到 agy")
+                continue
+            try:
+                run(['agy', 'plugin', 'install', plugin['source']])
+            except subprocess.SubprocessError:
+                failures.append(plugin['id'])
+        target = home / LOCATIONS['antigravity'] / 'statusline.sh'
+        if target.exists() and not dry:
+            text = target.read_text().splitlines(keepends=True)
+            text[0] = '#!' + sys.executable + '\n'
+            target.write_text(''.join(text))
+
+    source = manifest.get('testkit_skill_source')
+    targets = [name for name in ('codex', 'opencode') if name in selected]
+    if source and targets:
+        if offline:
+            pending.append('Testkit skills：离线模式未安装')
+        else:
             checkout = home / '.cache/harness-skills' / source['ref']
             if not checkout.exists():
                 if not dry:
@@ -277,7 +327,10 @@ def install(repo, home, selected, dry=False, offline=False):
                 run(['git', 'clone', source['url'], str(checkout)])
             run(['git', '-C', str(checkout), 'checkout', '--detach', source['ref']])
             if not dry:
-                deploy(checkout / source['subdir'], target / 'skills')
+                for harness in targets:
+                    deploy(checkout / source['subdir'], home / LOCATIONS[harness] / 'skills')
+    if 'opencode' in selected:
+        target = home / LOCATIONS['opencode']
         if (config_dir(repo, 'opencode') / 'package.json').exists():
             if offline or (not shutil.which('npm') and not dry):
                 pending.append('OpenCode npm 依赖：离线模式或未找到 npm')
@@ -297,14 +350,15 @@ def main():
     parser.add_argument('command', choices=['sync', 'install'])
     parser.add_argument('--home', type=Path, default=Path.home())
     parser.add_argument('--repo', type=Path, default=ROOT)
-    parser.add_argument('--only', nargs='+', choices=list(LOCATIONS), default=list(LOCATIONS))
+    parser.add_argument('--only', nargs='+', choices=list(LOCATIONS))
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--offline', action='store_true', help='只部署仓库文件，不拉取插件和依赖')
     args = parser.parse_args()
+    args.only = args.only or read_json(args.repo / '.harness.json').get('selected', list(LOCATIONS))
     if args.command == 'sync':
         if args.dry_run:
             parser.error('sync 不支持 --dry-run；导出只修改配置仓库')
-        sync(args.repo.resolve(), args.home.resolve())
+        sync(args.repo.resolve(), args.home.resolve(), args.only)
     else:
         install(args.repo.resolve(), args.home.resolve(), args.only, args.dry_run, args.offline)
 

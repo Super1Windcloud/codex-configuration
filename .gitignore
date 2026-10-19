@@ -33,3 +33,6 @@ Thumbs.db
 __pycache__/
 *.pyc
 .harness-backups/
+
+# Skills are restored from Testkit upstream; never vendor local skill packages.
+skills/
