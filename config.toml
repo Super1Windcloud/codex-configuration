@@ -8,7 +8,7 @@ model = "gpt-6.1-sol"
 # model="gpt-6-astra"
 # grok_model="grok-4.7"
 # gemini-model="gemini-3.8-flash"
-service_tier = "fast"
+service_tier = "default"
 approvals_reviewer = "user"
 # [DEPRECATED in 0.160.0] disable_response_storage = false
 approval_policy = "never"
@@ -166,7 +166,7 @@ enabled = true
 [tui]
 terminal_title = ["project-name", "git-branch", "run-state", "thread-title"]
 status_line_use_colors = true
-status_line = ["model-with-reasoning", "git-branch", "context-remaining", "used-tokens", "task-progress", "permissions", "run-state", "context-window-size", "five-hour-limit"]
+status_line = ["model-with-reasoning", "git-branch", "context-remaining", "used-tokens", "task-progress", "permissions", "run-state", "context-window-size", "five-hour-limit", "fast-mode"]
 whimsy = false #去除星星特效
 screen_reader_detection_done = true
 theme = "coldark-dark"

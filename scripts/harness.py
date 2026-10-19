@@ -144,9 +144,6 @@ def catalog(home, selected):
         config = tomllib.loads(path.read_text()) if path.exists() else {}
         markets = config.get('marketplaces', {})
         plugins = dict(config.get('plugins', {}))
-        for path in (home / '.codex/plugins/cache').glob('*/*/*/.codex-plugin/plugin.json'):
-            market, name = path.parts[-5:-3]
-            plugins.setdefault(f'{name}@{market}', {})
         for selector, state in sorted(plugins.items()):
             source = markets.get(selector.rsplit('@', 1)[-1], {})
             codex.append({'id': selector, 'enabled': state.get('enabled'),

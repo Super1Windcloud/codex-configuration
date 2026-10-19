@@ -1,5 +1,12 @@
 # 安装验证记录
 
+## 配置同步补缺验证（2026-10-19）
+
+- `python3 -B -m unittest discover -s tests -v`：30 项通过；新增缓存目录不进入插件清单、显式禁用声明保留的回归用例。
+- 从当前本机配置导出 `service_tier = "default"` 与 `fast-mode` 状态栏项；插件清单仅保留本仓库负责的 Codex 项及 Testkit 来源。
+- 未修改本机 Codex 配置、未安装插件、未调用模型。
+
+
 ## 单 agent 安装隔离验证（2026-10-19）
 
 - `python3 -B -m unittest discover -s /Users/super/super/codex-configuration/tests`：29 项通过。

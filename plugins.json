@@ -14,25 +14,9 @@
       "remote": false
     }
   ],
-  "claude": [
-    {
-      "id": "figma@claude-plugins-official",
-      "source": "anthropics/claude-plugins-official"
-    },
-    {
-      "id": "testkit@testkit",
-      "source": "winhok/testkit"
-    }
-  ],
   "testkit_skill_source": {
     "url": "https://github.com/winhok/testkit.git",
     "ref": "0c80ac38944bb70c6a60305c174dbc2a6a9767f2",
     "subdir": "skills"
-  },
-  "grok": [
-    {
-      "id": "testkit",
-      "source": "winhok/testkit"
-    }
-  ]
+  }
 }

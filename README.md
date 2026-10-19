@@ -26,3 +26,5 @@
 Codex 配置位于根目录；`harness/` 中的历史跨 agent 配置不参与安装或同步。`.harness.json` 记录本仓库范围。`--home /path/to/home` 可指定目标用户目录。
 
 [MIT License](LICENSE)
+
+Codex 插件同步只读取 config.toml 的显式声明，并保留禁用标志；缓存目录不会作为安装来源。插件清单仅导出本仓库负责的 Codex 范围。

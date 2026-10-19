@@ -180,6 +180,14 @@ class HarnessTest(unittest.TestCase):
 
 
 
+    def test_codex_catalog_ignores_cache_only_plugins_and_keeps_disabled_declarations(self):
+        self.write('.codex/config.toml', '[plugins."testkit@custom"]\nenabled=false\n[marketplaces.custom]\nsource_type="git"\nsource="owner/testkit"\n')
+        self.write('.codex/plugins/cache/openai-curated-remote/figma/16.0.0/.codex-plugin/plugin.json', '{}')
+        self.write('.codex/plugins/cache/custom/testkit/1.0/.codex-plugin/plugin.json', '{}')
+        entries = harness.catalog(self.home, ['codex'])['codex']
+        self.assertEqual(entries, [{'id': 'testkit@custom', 'enabled': False,
+                                   'source': 'owner/testkit', 'remote': False}])
+
     def test_remote_codex_figma_does_not_register_a_fake_git_marketplace(self):
         self.write('plugins.json', json.dumps({'codex': [
             {'id': 'figma@openai-curated', 'source': None, 'remote': True}]}), self.repo)
