@@ -6,6 +6,7 @@
     "codex",
     "claude",
     "opencode",
-    "shared"
+    "shared",
+    "grok"
   ]
 }

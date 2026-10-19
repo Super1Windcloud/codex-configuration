@@ -41,3 +41,4 @@
 - **对外操作明确授权**：对外可见操作（`git push`、`gh pr`、`gh release`、发布 crate/npm）即使在 bypass 模式下也仅在用户明确要求时执行。
 - **隔离工作树重构**：高风险探索与破坏性重构使用 `EnterWorktree` 工具或 `Agent(isolation: "worktree")` 在隔离工作树进行。
 - **私密项目降级**：私密敏感项目可直接在项目级 `.claude/settings.json` 中配置 `"defaultMode": "default"` 即可安全降级为默认交互确认模式。
+
