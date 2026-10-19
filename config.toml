@@ -14,7 +14,7 @@ model = "gpt-6.1-sol"
 # model="gpt-6-astra"
 # grok_model="grok-4.7"
 # gemini-model="gemini-3.8-flash"
-service_tier = "fast"
+service_tier = "default"
 approvals_reviewer = "user"
 # [DEPRECATED in 0.160.0] disable_response_storage = false
 approval_policy = "never"
@@ -107,6 +107,15 @@ command = "/opt/homebrew/bin/scrcpy-mcp"
 ADB_PATH = "/Users/super/Library/Android/sdk/platform-tools/adb"
 PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/super/Library/Android/sdk/platform-tools"
 
+[mcp_servers.mobile-mcp]
+command = "/opt/homebrew/bin/npx"
+args = ["-y", "@mobilenext/mobile-mcp@latest"]
+
+[mcp_servers.mobile-mcp.env]
+ANDROID_HOME = "/Users/super/Library/Android/sdk"
+ANDROID_SDK_ROOT = "/Users/super/Library/Android/sdk"
+PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/super/Library/Android/sdk/platform-tools"
+
 # [mcp_servers.idea]
 # url = "http://127.0.0.1:64342/stream"
 
@@ -130,6 +139,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/super/RustroverProjects/fuckport"]
+trust_level = "trusted"
+
+[projects."/Users/super/super/codex-configuration"]
 trust_level = "trusted"
 
 # 上下文瘦身：禁用非编程核心的办公套件插件，节省约 25KB 系统提示词与工具描述
@@ -175,6 +187,9 @@ enabled = true
 [plugins."computer-use@openai-bundled"]
 enabled = true
 
+[plugins."testkit@testkit-marketplace"]
+enabled = true
+
 [tui]
 terminal_title = ["project-name", "git-branch", "run-state", "thread-title"]
 status_line_use_colors = true
@@ -204,6 +219,10 @@ last_updated = "2026-10-15T11:26:04Z"
 last_revision = "84740e3d344b69b4a133201fa519eb37a62a2b2a"
 source_type = "git"
 source = "https://github.com/DietrichGebert/ponytail.git"
+
+[marketplaces.testkit-marketplace]
+source_type = "git"
+source = "https://github.com/winhok/testkit.git"
 
 [features]
 js_repl = true
