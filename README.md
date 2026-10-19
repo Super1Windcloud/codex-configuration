@@ -1,52 +1,26 @@
-# Harness 配置同步与 Testkit 安装
+# Harness 配置同步与运行环境安装
 
-统一管理 Codex、Claude Code、OpenCode 的全局指令与配置；技能安装范围仅为 [Testkit](https://github.com/winhok/testkit)。
+## Testkit 完整依赖与 Figma 安装
 
-## 使用
-
-需要 Python 3.11+、Git、对应工具的 CLI；OpenCode 依赖安装需要 npm。
+本仓库可独立部署 Codex / Claude Code / OpenCode。默认一并安装 Testkit 完整 skills、Python/移动端/浏览器/性能/视频/逆向工具依赖，并同步 Figma 插件安装来源。需要 Python 3.11+、Git；macOS 系统包通过已有 Homebrew 补齐。full 需要 Node 24+、npm 10+，缺少时尝试由 Homebrew 准备。
 
 ```bash
-# 同步配置与 Testkit 安装来源到仓库
 ~/super/codex-configuration/sync.sh
-
-# 预览安装计划
 ~/super/codex-configuration/install.sh --dry-run
-
-# 自动部署配置并安装 Testkit
 ~/super/codex-configuration/install.sh
-
-# 只安装 Codex 对应配置与 Testkit
-~/super/codex-configuration/install.sh --only codex
-
-# 离线部署配置；报告尚未安装的 Testkit 和依赖
+~/super/codex-configuration/install.sh --dependencies core
 ~/super/codex-configuration/install.sh --offline
 ```
 
-配置继续采用原有布局：Codex 位于根目录，Claude Code 和 OpenCode 位于 `harness/claude/`、`harness/opencode/`。`.harness.json` 指定默认范围；`--home /path/to/home` 可指定导出或部署的用户目录。
+- 普通安装默认 `--dependencies full`；core 仅准备核心 Python 和 mobile-mcp；none 跳过运行环境/MCP 构建。
+- 默认安装并登记 mobile-mcp，full 另含 Playwright MCP；使用 SDK 和独立运行目录的实际路径，不只复制 JSON。
+- 插件安装允许列表为 Testkit、Figma；其他本机 skills 不同步到 GitHub，也不卸载。插件缓存、依赖缓存和登录凭据不入库。
+- 运行环境位于 `~/.local/share/harness-testkit/`；全局指令会补充 `source .../env.sh` 的使用约定。
+- 覆盖前备份；保留原有设置、凭据与其他 MCP。`--dry-run` 无写入和下载；`--offline` 不联网安装，只部署配置并报告待安装项。
+- Xcode、设备信任、SDK 许可、WDA 签名、Midscene 模型凭据和 Figma OAuth 仍需本机准备，安装失败会返回非零状态。
 
-## Testkit 范围
+详见 [完整依赖与 MCP 配置](runtime/README.md)、[实际验证范围](VALIDATION.md)。验证命令：`python3 -B -m unittest discover -s ~/super/codex-configuration/tests -v`。
 
-- `plugins.json` 仅保留 Testkit 插件标识和技能来源。
-- Codex、OpenCode 从清单指定的 Testkit Git commit 拉取 `skills/`，部署为各自原生目录中的 `skills/<name>/SKILL.md`。
-- Claude Code 使用 `claude plugin install testkit@testkit`，恢复插件附带的 skills。
-- 插件安装只处理 Testkit；旧清单中其他插件也不会被安装。对应市场插件版本由市场决定。
-- GitHub 不保存本机 skills 副本，包括 `.system`、figma-to-compose、find-skills、rongcloud-im、screenshot-to-html 及其素材。`sync.sh` 跳过所有本机 skills 目录，`.gitignore` 同时阻止重新入库。
-- 本机已有的其他 skills 保留；安装脚本只部署 Testkit，不卸载其他用户资源。
-
-## 配置保护
-
-覆盖前备份到 `~/.harness-backups/<时间>/`。JSON 配置合并保留本机凭据，Codex 保留本机项目 trust 和运行时 marketplace 表；目标路径含软链接时拒绝覆盖。
-
-按文件白名单导出模型、MCP、全局指令、状态栏、hooks 等配置，不导出登录状态、会话、日志、数据库、node_modules 和插件缓存。常见凭据字段会被过滤，仍需在提交前检查自定义配置。MCP 所需的 SDK、工具和客户端运行时由目标机器准备。
-
-## 验证
-
-```bash
-python3 -B -m unittest discover -s ~/super/codex-configuration/tests -v
-bash -n ~/super/codex-configuration/install.sh ~/super/codex-configuration/sync.sh
-```
-
-用例覆盖仅 Testkit 来源、排除其他 skills、旧清单安装过滤、原生 Testkit 部署、备份脱敏、预览无副作用和配置保护。
+配置保持原有布局：Codex 位于根目录，其他工程位于 `harness/`；`.harness.json` 声明默认同步范围。`--home /path/to/home` 可指定目标用户目录。
 
 [MIT License](LICENSE)

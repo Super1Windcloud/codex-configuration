@@ -36,3 +36,7 @@ __pycache__/
 
 # Skills are restored from Testkit upstream; never vendor local skill packages.
 skills/
+
+node_modules/
+
+.venv/

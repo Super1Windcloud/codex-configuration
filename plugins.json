@@ -2,12 +2,23 @@
   "version": 1,
   "codex": [
     {
+      "id": "figma@openai-curated",
+      "enabled": true,
+      "source": null,
+      "remote": true
+    },
+    {
       "id": "testkit@testkit-marketplace",
       "enabled": true,
-      "source": "https://github.com/winhok/testkit.git"
+      "source": "https://github.com/winhok/testkit.git",
+      "remote": false
     }
   ],
   "claude": [
+    {
+      "id": "figma@claude-plugins-official",
+      "source": "anthropics/claude-plugins-official"
+    },
     {
       "id": "testkit@testkit",
       "source": "winhok/testkit"
