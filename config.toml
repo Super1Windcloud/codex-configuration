@@ -104,6 +104,13 @@ ANDROID_HOME = "~/Library/Android/sdk"
 ANDROID_SDK_ROOT = "~/Library/Android/sdk"
 PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:~/Library/Android/sdk/platform-tools"
 
+[mcp_servers.reqable]
+command = "/opt/homebrew/bin/npx"
+args = ["-y", "reqable-mcp-server"]
+
+[mcp_servers.reqable.env]
+PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
 # [mcp_servers.idea]
 # url = "http://127.0.0.1:64342/stream"
 
