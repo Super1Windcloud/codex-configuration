@@ -3,10 +3,6 @@
     "codex": "."
   },
   "selected": [
-    "codex",
-    "claude",
-    "opencode",
-    "shared",
-    "grok"
+    "codex"
   ]
 }
