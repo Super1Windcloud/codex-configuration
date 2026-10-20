@@ -217,3 +217,9 @@ trusted_hash = "sha256:6a6f42bc3b58d6262db38bfd74d7f340fcca2b09cdb134aad365063f0
 
 [hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:subagent_start:0:0"]
 trusted_hash = "sha256:1423b56c1322f96c8f74c51c1e7ae9a047b904c1fa43ee9165d462fd7a6e70ef"
+
+[mcp_servers."mitmproxy-mcp"]
+command = "uvx"
+args = ["--directory", "~/.local/share/harness-mitmproxy/codex", "--no-config", "--python", "3.13", "--with", "mcp<2", "--from", "mitmproxy-mcp==0.6.1", "mitmproxy-mcp"]
+enabled = true
+startup_timeout_sec = 120
