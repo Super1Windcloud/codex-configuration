@@ -67,7 +67,7 @@ git -C ~/super/codex-configuration diff
 
 详见 [完整依赖与 MCP 配置](runtime/README.md)、[实际验证范围](VALIDATION.md)。验证命令：`python3 -B -m unittest discover -s ~/super/codex-configuration/tests -v`。
 
-Codex 配置位于根目录；`harness/` 中的历史跨 agent 配置不参与安装或同步。`.harness.json` 记录本仓库范围。`--home /path/to/home` 可指定目标用户目录。
+Codex 配置位于根目录。本仓库不保存其他 agent 的配置。`.harness.json` 记录本仓库范围。`--home /path/to/home` 可指定目标用户目录。
 
 [MIT License](LICENSE)
 
