@@ -172,7 +172,7 @@ whimsy = false #去除星星特效
 screen_reader_detection_done = true
 theme = "coldark-dark"
 fullscreen_transcript = false
-notifications = true
+notifications = false
 animations = true
 
 [tui.model_availability_nux]
@@ -224,3 +224,6 @@ command = "uvx"
 args = ["--directory", "~/.local/share/harness-mitmproxy/codex", "--no-config", "--python", "3.13", "--with", "mcp<2", "--from", "mitmproxy-mcp==0.6.1", "mitmproxy-mcp"]
 enabled = true
 startup_timeout_sec = 120
+
+[notice]
+hide_rate_limit_model_nudge = true
