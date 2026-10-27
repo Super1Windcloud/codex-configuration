@@ -164,6 +164,7 @@ enabled = true
 enabled = true
 
 [tui]
+show_tooltips = false
 terminal_title = ["project-name", "git-branch", "run-state", "thread-title"]
 status_line_use_colors = true
 status_line = ["model-with-reasoning", "git-branch", "context-remaining", "used-tokens", "task-progress", "permissions", "run-state", "context-window-size", "five-hour-limit", "fast-mode"]
